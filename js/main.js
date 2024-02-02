@@ -8,11 +8,11 @@ sear.addEventListener('click',function(){
     showSearchInputs(); closeSideNav();
 });
 Cat.addEventListener('click',function(){
-    getArea(); closeSgetCategories(); closeSideNav();
+    getArea(); getCategories(); closeSideNav();
 })
 
 Area.addEventListener('click',function(){
-    ideNav();
+    closeSideNav();
 })
 Ingr.addEventListener('click',function(){
     getIngredients(); closeSideNav();
@@ -40,12 +40,7 @@ function displayMeals(arr) {
         </div>
         `
     }
-    // let getMealDetails=document.getElementById("getMealDetails");
-    // getMealDetails.addEventListener('click',function(){
-
-    // })
-
-    row.innerHTML = box
+    row.innerHTML = box; 
 }
 
 async function getCategories() {
@@ -67,7 +62,7 @@ function displayCategories(arr) {
     for (let i = 0; i < arr.length; i++) {
         box += `
         <div class="col-md-3">
-                <div id="getCategoryMeals" class="meal position-relative overflow-hidden rounded-2 ">
+                <div id="getCategoryMeals" onclick="getCategoryMeals('${arr[i].strCategory}')" class="meal position-relative overflow-hidden rounded-2 ">
                     <img class="w-100" src="${arr[i].strCategoryThumb}" alt="" srcset="">
                     <div class="meal-layer position-absolute text-center text-black p-2">
                         <h3>${arr[i].strCategory}</h3>
@@ -77,11 +72,11 @@ function displayCategories(arr) {
         </div>
         `
     }
-    let getCategoryMeals=document.getElementById('getCategoryMeals');
-    getCategoryMeals.addEventListener("click",function(){
-        getCategoryMeals('${arr[i].strCategory}');
+    // let getCategoryMeals=document.getElementById('getCategoryMeals');
+    // getCategoryMeals.addEventListener("click",function(){
+    //     getCategoryMeals('${arr[i].strCategory}');
 
-    })
+    // })
 
     row.innerHTML = box
 }
@@ -96,7 +91,6 @@ async function getArea() {
     let respone = await fetch(`https://www.themealdb.com/api/json/v1/1/list.php?a=list`)
     respone = await respone.json()
     console.log(respone.meals);
-
     displayArea(respone.meals)
     $(".inner-loading").fadeOut(500)
 
@@ -109,7 +103,7 @@ function displayArea(arr) {
     for (let i = 0; i < arr.length; i++) {
         box += `
         <div class="col-md-3">
-                <div  id="getAreaMeals" class="rounded-2 text-center " >
+                <div  id="getAreaMeals" onclick="getAreaMeals('${arr[i].strArea}')" class="rounded-2 text-center " >
                         <i class="fa-solid fa-house-laptop fa-4x"></i>
                         <h3>${arr[i].strArea}</h3>
                 </div>
@@ -117,10 +111,7 @@ function displayArea(arr) {
         `
     }
  
-    let getAreaMeals=document.getElementById("getAreaMeals");
-    getAreaMeals.addEventListener('click',function(){
-        getAreaMeals('${arr[i].strArea}');
-    })
+   
     row.innerHTML = box
 }
 
@@ -147,7 +138,7 @@ function displayIngredients(arr) {
     for (let i = 0; i < arr.length; i++) {
         box += `
         <div class="col-md-3">
-                <div  class="rounded-2 text-center" id="imgGetMeal" >
+                <div  onclick="getIngredientsMeals('${arr[i].strIngredient}')" class="rounded-2 text-center" id="imgGetMeal" >
                         <i class="fa-solid fa-drumstick-bite fa-4x"></i>
                         <h3>${arr[i].strIngredient}</h3>
                         <p>${arr[i].strDescription.split(" ").slice(0, 20).join(" ")}</p>
@@ -155,10 +146,10 @@ function displayIngredients(arr) {
         </div>
         `
     }
-let imgGetMeal=document.getElementById("imgGetMeal");
-imgGetMeal.addEventListener('click',function(){
-    getIngredientsMeals('${arr[i].strIngredient}')
-})
+// let imgGetMeal=document.getElementById("imgGetMeal");
+// imgGetMeal.addEventListener('click',function(){
+//     getIngredientsMeals('${arr[i].strIngredient}')
+// })
 
 
     row.innerHTML = box
@@ -276,22 +267,12 @@ function showSearchInputs() {
     search.innerHTML = `
     <div class="row py-4 ">
         <div class="col-md-6 ">
-            <input id="searchByName" class="form-control bg-transparent text-white" type="text" placeholder="Search By Name">
+            <input id="searchByName"  onkeyup="searchByName(this.value)" class="form-control bg-transparent text-white" type="text" placeholder="Search By Name">
         </div>
         <div class="col-md-6">
-            <input id="searchByFirstLetter" maxlength="1" class="form-control bg-transparent text-white" type="text" placeholder="Search By First Letter">
+            <input id="searchByFirstLetter"onkeyup="searchByFirstLetter(this.value)" maxlength="1" class="form-control bg-transparent text-white" type="text" placeholder="Search By First Letter">
         </div>
     </div>`
-
-
-let searchByName=document.getElementById("searchByName");
-searchByName.addEventListener('keyup',function(){
-    searchByName(this.value);
-})
-let searchByFirstLetter=document.getElementById("searchByFirstLetter");
-searchByFirstLetter.addEventListener('keyup',function(){
-    searchByFirstLetter(this.value)
-})
 
     row.innerHTML = ""
 }
